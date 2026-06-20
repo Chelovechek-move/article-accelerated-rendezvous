@@ -1,0 +1,23 @@
+# LaTeX build files that are not needed in the repository
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.synctex.gz(busy)
+
+# Other temporary files
+*.tmp
+*.bak
+*~
+*.swp
+
+# Build folders
+build/
+out/
+
+# Editors
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
