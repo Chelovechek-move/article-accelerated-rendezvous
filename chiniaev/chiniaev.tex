@@ -1,7 +1,7 @@
 \addcontentsline{etoc}{chapter}{\textit{Chiniaev V.\,N., Kuznetsov A.\,A., Chugunov V.\,V.} Title}%эта строка нужна для формирования содержания журнала на английском языке
 
 \begin{abstract}
-В работе рассматривается задача встречи космических аппаратов на возмущённых эллиптических орбитах. Разработан ускоренный алгоритм, основанный на эффективном построении начального приближения. Оно формируется путём решения линейной двухимпульсной задачи встречи на опорной траектории движения. Для поиска импульсов, оптимальных по суммарной характеристической скорости, используется метод Ньютона с множественным стартом. Получены аналитические выражения для градиента и матрицы Гесса функции характеристической скорости по истинным долготам манёвров. Численные эксперименты показали, что применение метода Ньютона позволяет снизить вычислительные затраты на построение начального приближения более чем в полтора раза. Найденное приближение затем используется при решении нелинейной задачи встречи в случае импульсных манёвров и манёвров с конечной тягой. Работоспособность алгоритма продемонстрирована на ряде типовых задач встречи.
+В работе рассматривается задача встречи космических аппаратов на возмущённых эллиптических орбитах. Разработан ускоренный алгоритм, основанный на эффективном построении начального приближения. Оно формируется путём решения линейной двухимпульсной задачи встречи на опорной траектории движения. Для поиска импульсов, оптимальных по суммарной характеристической скорости, используется метод Ньютона с множественным стартом. Получены аналитические выражения для градиента и матрицы Гессе функции характеристической скорости по истинным долготам манёвров. Численные эксперименты показали, что применение метода Ньютона позволяет ускорить построение начального приближения более чем в полтора раза по сравнению с методом перебора. Описана процедура нелинейного уточнения начального приближения в случае импульсных манёвров и манёвров с конечной тягой. Работоспособность алгоритма продемонстрирована на ряде типовых задач встречи.
 
 \kwr задача встречи космических аппаратов, возмущённое движение, эллиптические орбиты, импульсные манёвры, конечная тяга, метод Ньютона, начальное приближение, последовательная линеаризация
 
@@ -16,7 +16,8 @@
 {Accelerated algorithm for solving the spacecraft rendezvous problem in perturbed elliptical orbits}
 
 \begin{abstract}
-This paper addresses the spacecraft rendezvous problem in perturbed elliptical orbits. An accelerated algorithm is developed based on the efficient construction of an initial guess. The initial guess is obtained by solving a linear two-impulse rendezvous problem along a reference trajectory. To determine the impulses that are optimal with respect to the total characteristic velocity, a multistart Newton method is employed. Analytical expressions are derived for the gradient and Hessian of the characteristic-velocity objective function with respect to the true longitudes of the maneuvers. Numerical experiments show that the use of the Newton method reduces the computational cost of constructing the initial guess by more than a factor of 1.5. The resulting initial guess is then used to solve the nonlinear rendezvous problem for both impulsive maneuvers and finite-thrust maneuvers. The performance of the algorithm is demonstrated on a set of representative rendezvous problems.
+This paper addresses the spacecraft rendezvous problem in perturbed elliptical orbits. An accelerated algorithm is developed based on the efficient construction of an initial guess. The initial guess is obtained by solving a linear two-impulse rendezvous problem along a reference trajectory. To determine the impulses that are optimal with respect to the total characteristic velocity, a multistart Newton method is employed. Analytical expressions are derived for the gradient and Hessian of the characteristic-velocity objective function with respect to the true longitudes of the maneuvers. Numerical experiments show that the use of the Newton method accelerates the construction of the initial guess by more than a factor of 1.5 compared with grid search. A procedure for nonlinear refinement of the initial guess is described for both impulsive and finite-thrust maneuver models. The performance of the algorithm is demonstrated on a set of representative rendezvous problems.
+
 	
 \kwe spacecraft rendezvous problem, perturbed motion, elliptical orbits, impulsive maneuvers, finite thrust, Newton method, initial guess, successive linearization
 \end{abstract}
@@ -118,14 +119,14 @@ j = 1, 2,
 \begin{equation*}
     \nabla^2 \mathcal{J}(\mathbf{L}^{(k)})~ \mathbf{d}^{(k)} = - \nabla \mathcal{J}(\mathbf{L}^{(k)}).
 \end{equation*}
-Таким образом, реализация метода требует вычисления градиента и матрицы Гесса функции $\mathcal{J}(\mathbf{L})$. Поскольку использование разностных схем влечёт существенные вычислительные затраты, авторами получены аналитические выражения для этих величин. Далее предполагается, что $\Delta \mathbf{V}_j \neq 0$, $j = 1, 2$. Градиент $\nabla \mathcal{J}(\mathbf{L}) \in \mathbb{R}^{2}$ имеет вид
+Таким образом, реализация метода требует вычисления градиента и матрицы Гессе функции $\mathcal{J}(\mathbf{L})$. Поскольку использование разностных схем влечёт существенные вычислительные затраты, авторами получены аналитические выражения для этих величин. Далее предполагается, что $\Delta \mathbf{V}_j \neq 0$, $j = 1, 2$. Градиент $\nabla \mathcal{J}(\mathbf{L}) \in \mathbb{R}^{2}$ имеет вид
 \begin{equation*}
 \nabla \mathcal{J}_j = \sum_{i=1}^{2} \frac{\partial \mathcal{J}_i}{\partial L_j} =
 \sum_{i=1}^{2} \mathbf{e}_i^\top \frac{\partial \Delta \mathbf{V}_i}{\partial L_j}, \quad
 \mathbf{e}_i (\mathbf{L}) = \frac{\Delta \mathbf{V}_i (\mathbf{L})}{\Vert \Delta \mathbf{V}_i (\mathbf{L}) \Vert_2}, \quad
 j = 1, 2.
 \end{equation*}
-Матрица Гесса $\nabla^2 \mathcal{J}(\mathbf{L}) \in \mathbb{R}^{2 \times 2}$ определяется соотношениями
+Матрица Гессе $\nabla^2 \mathcal{J}(\mathbf{L}) \in \mathbb{R}^{2 \times 2}$ определяется соотношениями
 \begin{equation*}
 \nabla^2 \mathcal{J}_{jk} = \sum_{i=1}^{2} \frac{\partial^2 \mathcal{J}_i}{\partial L_j \partial L_k}, \quad j, k = 1, 2,
 \end{equation*}
@@ -135,7 +136,7 @@ j = 1, 2.
 \left( \frac{\partial \Delta \mathbf{V}_i}{\partial L_k} \right)^\top \left( I - \mathbf{e}_i \mathbf{e}_i^\top \right)
 \frac{\partial \Delta \mathbf{V}_i}{\partial L_j} + \mathbf{e}_i^\top \frac{\partial^2 \Delta \mathbf{V}_i}{\partial L_j \partial L_k}.
 \end{equation*}
-Для вычисления первых и вторых производных импульсов скорости $\frac{\partial \Delta \mathbf{V}}{\partial L_j} \in \mathbb{R}^{6}$ и $\frac{\partial^2 \Delta V}{\partial L_j \partial L_k} \in \mathbb{R}^{6}$, продифференцируем ограничение (\ref{constraint_lin_2_imp}). Однократное дифференцирование по $L_j$ даёт систему
+Для вычисления первых и вторых производных импульсов скорости $\frac{\partial \Delta \mathbf{V}}{\partial L_j} \in \mathbb{R}^{6}$ и $\frac{\partial^2 \Delta \mathbf{V}}{\partial L_j \partial L_k} \in \mathbb{R}^{6}$, продифференцируем ограничение (\ref{constraint_lin_2_imp}). Однократное дифференцирование по $L_j$ даёт систему
 \begin{equation*}
 \mathcal{M} \frac{\partial \Delta \mathbf{V}}{\partial L_j} = - \frac{\partial \mathcal{M}}{\partial L_j} \Delta \mathbf{V},
 \end{equation*}
@@ -149,7 +150,7 @@ j = 1, 2.
 Здесь $\frac{\partial \mathcal{M}}{\partial L_j} \in \mathbb{R}^{6 \times 6}$, $\frac{\partial^2 \mathcal{M}}{\partial L_j \partial L_k} \in \mathbb{R}^{6 \times 6}$
 --- первая и вторая производные матрицы $\mathcal{M}$ по истинным долготам. Так как матрица $\mathcal{M}$ состоит из двух подматриц (\ref{M_M1_M2}), то её производные по истинным долготам вычисляются для каждого блока отдельно. Явные выражения для $B(L)$, $\frac{\partial B}{\partial L}$ и $\frac{\partial^2 B}{\partial L^2}$, приведены в Приложении I.
 
-Следует отметить, что матрица Гесса $\nabla^2 \mathcal{J}(\mathbf{L})$ не имеет гарантии положительной определённости и может быть плохо обусловлена. Поэтому для повышения надёжности метода в практической реализации используется линейный поиск по шагу $\alpha_k$.
+Следует отметить, что матрица Гессе $\nabla^2 \mathcal{J}(\mathbf{L})$ не имеет гарантии положительной определённости и может быть плохо обусловлена. Поэтому для повышения надёжности метода в практической реализации используется линейный поиск по шагу $\alpha_k$.
 
 \subsection{Сравнение методов Ньютона и перебора}
 При решении задачи встречи существенную роль играет способ поиска глобально оптимального решения в пространстве углов приложения импульсов, поскольку именно он определяет вычислительные затраты алгоритма. В работе Баранова \cite{s4} для этой цели используется метод перебора, тогда как в настоящей работе рассматривается метод Ньютона. Проведём сравнение их быстродействия при решении линейной двухимпульсной задачи встречи (\ref{problem_2_imp_linear_non_cond}). 
@@ -272,7 +273,7 @@ j = 1, 2.
 \end{equation*}
 Следовательно, при фиксированном модуле ускорения минимизация суммарной характеристической скорости эквивалентна минимизации суммарного времени работы двигателя. Постановка нелинейной задачи встречи с конечной тягой отличается от (\ref{problem_N_imp_non_linear}) только используемой моделью управления. Решение задачи, как и в разделе 4.2, ищется методом последовательной линеаризации, но с использованием матрицы $B_{\text{ft}}$.
 
-\section{Тестирование}
+\section{Численные примеры}
 Работоспособность предложенного алгоритма продемонстрируем на двух характерных задачах встречи: задаче коррекции орбиты и задаче фазирования. Во всех расчётах учитывались разложение гравитационного потенциала Земли до порядка $16 \times 16$ и сопротивление атмосферы. Рассматривался модельный КА массой $m = 500$ кг с тягой двигательной установки $F = 10$ Н. Отношение эффективной площади к массе в модели атмосферного сопротивления принималось равным $S_{\text{eff}} / m = 0.015$ $\text{м}^2 / \text{кг}$. При построении начального приближения полагалось $l_{\text{min}} = 180^\circ$. Для алгоритма с конечной тягой максимальная длительность одного манёвра задавалась в виде $\Delta t_{\text{max}} = \frac{1}{12} T$, где $T$ --- орбитальный период, что соответствует $30^\circ$ витка. Ограничение на характеристическую скорость определялось как $\Delta V_{\text{max}} = \frac{F}{m} \Delta t_{\text{max}}$.
 
 \subsection{Коррекция орбиты}
